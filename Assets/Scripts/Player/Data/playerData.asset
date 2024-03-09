@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: 
   MovementVelocity: 10
+  jumpVelocity: 17
+  jumpCount: 1
+  groundCheckRadius: 0.3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64

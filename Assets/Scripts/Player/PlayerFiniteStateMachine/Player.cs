@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
-
+    public PlayerJumpState JumpState { get; private set; }
+    public PlayerLandState LandState { get; private set; }
+    public PlayerAirState AirState { get; private set; }
 
 
     #endregion
@@ -16,7 +18,7 @@ public class Player : MonoBehaviour
     #region Player components
     public Animator Animator { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
-    public Rigidbody2D RigidbodyPlayer { get; private set; }
+    public Rigidbody2D PlayerRigidbody { get; private set; }
 
     [SerializeField]
     private PlayerData PlayerData;
@@ -32,26 +34,36 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Check variables
+    [SerializeField]
+    private Transform groundCheck;
+
+    #endregion
     #region Unity callback methods
     private void Awake()
     {
         StateMachine = new PlayerStateMachine();
         IdleState = new PlayerIdleState(this, StateMachine, PlayerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, PlayerData, "move");
+        JumpState = new PlayerJumpState(this, StateMachine, PlayerData, "inAir");
+        AirState = new PlayerAirState(this, StateMachine, PlayerData, "inAir");
+        LandState = new PlayerLandState(this, StateMachine, PlayerData, "land");
+
+        
     }
 
     private void Start()
     {
         Animator = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();
-        RigidbodyPlayer = GetComponent<Rigidbody2D>();
+        PlayerRigidbody = GetComponent<Rigidbody2D>();
         PlayerDirection = 1;
         StateMachine.Initialize(IdleState);
     }
 
     private void Update()
     {
-        CurrentVelocity = RigidbodyPlayer.velocity;
+        CurrentVelocity = PlayerRigidbody.velocity;
         StateMachine.CurrentState.LogicUpdate();
     }
 
@@ -65,13 +77,25 @@ public class Player : MonoBehaviour
     public void SetVelocityX(float velocity)
     {
         VelocityData.Set(velocity, CurrentVelocity.y);
-        RigidbodyPlayer.velocity = VelocityData;
+        PlayerRigidbody.velocity = VelocityData;
         CurrentVelocity = VelocityData;
 
+    }
+
+    public void SetVelocityY(float velocity)
+    {
+        VelocityData.Set(CurrentVelocity.x, velocity);
+        PlayerRigidbody.velocity = VelocityData;
+        CurrentVelocity = VelocityData;
     }
     #endregion
 
     #region Check methods
+
+    public bool CheckGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, PlayerData.groundCheckRadius, PlayerData.groundMask);
+    }
     private void Flip()
     {
         PlayerDirection *= -1;
@@ -86,6 +110,10 @@ public class Player : MonoBehaviour
             Flip();
         }
     }
+
+    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+
+    private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishedTrigger();
     #endregion
 
 }

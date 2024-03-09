@@ -7,7 +7,7 @@ public class PlayerState
     protected Player Player;
     protected PlayerStateMachine StateMachine;
     protected PlayerData PlayerData;
-
+    protected bool isAnimationFinished;
     protected float StartTime;
 
     private string AnimationBoolName;
@@ -26,8 +26,9 @@ public class PlayerState
         DoChecks();
         Player.Animator.SetBool(AnimationBoolName, true);
         StartTime = Time.time;
-            
+        
         UnityEngine.Debug.Log(AnimationBoolName);
+        isAnimationFinished = false;
     }
 
     public virtual void Exit()
@@ -49,6 +50,15 @@ public class PlayerState
     {
 
     }
+
+    public virtual void AnimationTrigger()
+    {
+
+    }
+
+    public virtual void AnimationFinishedTrigger()
+    => isAnimationFinished = true;
+
 
     #endregion
 }
