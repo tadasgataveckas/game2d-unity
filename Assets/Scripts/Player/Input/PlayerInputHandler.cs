@@ -51,7 +51,7 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    public void ResetJumpInput() => JumpInput = false;
+    public void SetJumpInputFalse() => JumpInput = false;
 
     private void CheckInputHoldTime()
     {

@@ -12,11 +12,11 @@ public class PlayerLandState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(InputX != 0)
+        if(InputX != 0 && !isExitingState)
         {
             StateMachine.ChangeState(Player.MoveState);
         }
-        else if (isAnimationFinished)
+        else if (isAnimationFinished && !isExitingState)
         {
             StateMachine.ChangeState(Player.IdleState);
             //Animation -> land.anim -> create animation event gale - > pasirinkti funckija AnimationFinishedTrigger();

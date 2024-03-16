@@ -41,17 +41,21 @@ public class PlayerWallGrabState : PlayerTouchWallState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Player.SetVelocityX(0);
-        Player.SetVelocityY(0);
-        FreezePlayer();
-        if(InputY > 0)
+        //Player.SetVelocityX(0);
+        //Player.SetVelocityY(0);
+        
+        if (!isExitingState)
         {
-            StateMachine.ChangeState(Player.WallClimbState);
+            FreezePlayer();
+            if (InputY > 0)
+            {
+                StateMachine.ChangeState(Player.WallClimbState);
 
-        }
-        else if (InputY < 0 || !grabInput) 
-        {
-            StateMachine.ChangeState(Player.WallSlideState);
+            }
+            else if (InputY < 0 || !grabInput)
+            {
+                StateMachine.ChangeState(Player.WallSlideState);
+            }
         }
     }
 

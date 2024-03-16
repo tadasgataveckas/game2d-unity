@@ -9,6 +9,7 @@ public class PlayerState
     protected PlayerData PlayerData;
     protected bool isAnimationFinished;
     protected float StartTime;
+    public bool isExitingState;
 
     private string AnimationBoolName;
 
@@ -29,11 +30,13 @@ public class PlayerState
         
         UnityEngine.Debug.Log(AnimationBoolName);
         isAnimationFinished = false;
+        isExitingState = false;
     }
 
     public virtual void Exit()
     {
         Player.Animator.SetBool(AnimationBoolName, false);
+        isExitingState = true;
     }
 
     public virtual void LogicUpdate()

@@ -28,4 +28,9 @@ public class PlayerData : ScriptableObject
 
     [Header("Wall Climb state")]
     public float wallClimbVelocity = 3f;
+
+    [Header("Wall Jump state")]
+    public float wallJumpVelocity = 20f;
+    public float wallJumpTime = 0.05f;
+    public Vector2 wallJumpAngle = new Vector2(1, 2);
 }

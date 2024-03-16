@@ -13,7 +13,7 @@ public class PlayerJumpState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-
+        Player.InputHandler.SetJumpInputFalse();
         Player.SetVelocityY(PlayerData.jumpVelocity);
         isAbilityDone = true;
         jumpsLeft--;

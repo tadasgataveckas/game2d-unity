@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 
     public PlayerWallSlideState WallSlideState { get; private set; }
 
+    public PlayerWallJumpState WallJumpState { get; private set; }
+
     #endregion
 
     #region Player components
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour
         WallGrabState = new PlayerWallGrabState(this, StateMachine, PlayerData, "wallGrab");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, PlayerData, "wallClimb");
         WallSlideState = new PlayerWallSlideState(this, StateMachine, PlayerData, "wallSlide");
-
+        WallJumpState = new PlayerWallJumpState(this, StateMachine, PlayerData, "inAir");
 
         
     }
@@ -102,6 +104,14 @@ public class Player : MonoBehaviour
         PlayerRigidbody.velocity = VelocityData;
         CurrentVelocity = VelocityData;
     }
+
+    public void SetVelocityJump(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize();
+        VelocityData.Set(angle.x * velocity * direction, angle.y * velocity);
+        PlayerRigidbody.velocity = VelocityData;
+        CurrentVelocity = VelocityData;
+    }
     #endregion
 
     #region Check methods
@@ -110,6 +120,7 @@ public class Player : MonoBehaviour
     {
         return Physics2D.OverlapCircle(groundCheck.position, PlayerData.groundCheckRadius, PlayerData.groundMask);
     }
+
     private void Flip()
     {
         PlayerDirection *= -1;
@@ -132,6 +143,10 @@ public class Player : MonoBehaviour
     public bool CheckTouchingWall()
     {
         return Physics2D.Raycast(wallCheck.position, Vector2.right * PlayerDirection, PlayerData.wallCheckDistance, PlayerData.groundMask);
+    }
+    public bool CheckTouchingWallBack()
+    {
+        return Physics2D.Raycast(wallCheck.position, Vector2.right * -PlayerDirection, PlayerData.wallCheckDistance, PlayerData.groundMask);
     }
     #endregion
 

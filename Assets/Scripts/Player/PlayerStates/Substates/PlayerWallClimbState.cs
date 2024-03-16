@@ -13,11 +13,14 @@ public class PlayerWallClimbState : PlayerTouchWallState
     {
         base.LogicUpdate();
 
-        Player.SetVelocityY(PlayerData.wallClimbVelocity);
-
-        if (InputY != 1)
+        if (!isExitingState)
         {
-            StateMachine.ChangeState(Player.WallGrabState);
+            Player.SetVelocityY(PlayerData.wallClimbVelocity);
+
+            if (InputY != 1)
+            {
+                StateMachine.ChangeState(Player.WallGrabState);
+            }
         }
     }
 }

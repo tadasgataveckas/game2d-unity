@@ -10,6 +10,7 @@ public class PlayerAirState : PlayerState
     private bool isJumping;
     private bool jumpInputStop;
     private bool isTouchingWall;
+    private bool isTouchingWallBack;
     private bool grabInput;
     public PlayerAirState(Player player, PlayerStateMachine statemachine, PlayerData playerdata, string animationboolname) : base(player, statemachine, playerdata, animationboolname)
     {
@@ -21,7 +22,7 @@ public class PlayerAirState : PlayerState
         base.DoChecks();
         isGrounded = Player.CheckGrounded();
         isTouchingWall = Player.CheckTouchingWall();
-
+        isTouchingWallBack = Player.CheckTouchingWallBack();
     }
 
     public override void Enter()
@@ -36,6 +37,7 @@ public class PlayerAirState : PlayerState
 
     public override void LogicUpdate()
     {
+        //pirmiausia runninamas paveldeto logic update metodo kodas, poto sekantis kodas
         base.LogicUpdate();
         InputX = Player.InputHandler.NormInputX;
         jumpInput = Player.InputHandler.JumpInput;
@@ -49,8 +51,14 @@ public class PlayerAirState : PlayerState
         {
             StateMachine.ChangeState(Player.LandState);
         }
+        else if (jumpInput && (isTouchingWall || isTouchingWallBack))
+        {
+            Player.WallJumpState.FindWallJumpDirection(isTouchingWall);
+            StateMachine.ChangeState(Player.WallJumpState);
+        }
         else if (jumpInput && Player.JumpState.CanJump())
         {
+            //Player.InputHandler.SetJumpInputFalse();
             StateMachine.ChangeState(Player.JumpState);
         }
         else if (isTouchingWall && grabInput)
