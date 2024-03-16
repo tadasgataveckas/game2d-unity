@@ -53,6 +53,7 @@ public class PlayerAirState : PlayerState
         }
         else if (jumpInput && (isTouchingWall || isTouchingWallBack))
         {
+            isTouchingWall = Player.CheckTouchingWall();
             Player.WallJumpState.FindWallJumpDirection(isTouchingWall);
             StateMachine.ChangeState(Player.WallJumpState);
         }
