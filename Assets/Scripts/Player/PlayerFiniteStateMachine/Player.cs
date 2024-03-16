@@ -12,6 +12,12 @@ public class Player : MonoBehaviour
     public PlayerLandState LandState { get; private set; }
     public PlayerAirState AirState { get; private set; }
 
+    public PlayerTouchWallState WallTouchState { get; private set; }
+    public PlayerWallGrabState WallGrabState { get; private set; }
+
+    public PlayerWallClimbState WallClimbState { get; private set; }
+
+    public PlayerWallSlideState WallSlideState { get; private set; }
 
     #endregion
 
@@ -37,8 +43,11 @@ public class Player : MonoBehaviour
     #region Check variables
     [SerializeField]
     private Transform groundCheck;
+    [SerializeField]
+    private Transform wallCheck;
 
     #endregion
+
     #region Unity callback methods
     private void Awake()
     {
@@ -48,6 +57,11 @@ public class Player : MonoBehaviour
         JumpState = new PlayerJumpState(this, StateMachine, PlayerData, "inAir");
         AirState = new PlayerAirState(this, StateMachine, PlayerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, PlayerData, "land");
+
+        WallGrabState = new PlayerWallGrabState(this, StateMachine, PlayerData, "wallGrab");
+        WallClimbState = new PlayerWallClimbState(this, StateMachine, PlayerData, "wallClimb");
+        WallSlideState = new PlayerWallSlideState(this, StateMachine, PlayerData, "wallSlide");
+
 
         
     }
@@ -114,6 +128,11 @@ public class Player : MonoBehaviour
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishedTrigger();
+
+    public bool CheckTouchingWall()
+    {
+        return Physics2D.Raycast(wallCheck.position, Vector2.right * PlayerDirection, PlayerData.wallCheckDistance, PlayerData.groundMask);
+    }
     #endregion
 
 }

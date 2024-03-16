@@ -15,7 +15,11 @@ MonoBehaviour:
   MovementVelocity: 10
   jumpVelocity: 17
   jumpCount: 1
+  variableJumpHeightMultiplier: 0.5
   groundCheckRadius: 0.3
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  wallCheckDistance: 1
+  wallSlideVelocity: 3
+  wallClimbVelocity: 3

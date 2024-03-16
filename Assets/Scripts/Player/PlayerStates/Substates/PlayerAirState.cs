@@ -9,6 +9,8 @@ public class PlayerAirState : PlayerState
     private bool jumpInput;
     private bool isJumping;
     private bool jumpInputStop;
+    private bool isTouchingWall;
+    private bool grabInput;
     public PlayerAirState(Player player, PlayerStateMachine statemachine, PlayerData playerdata, string animationboolname) : base(player, statemachine, playerdata, animationboolname)
     {
         
@@ -18,6 +20,7 @@ public class PlayerAirState : PlayerState
     {
         base.DoChecks();
         isGrounded = Player.CheckGrounded();
+        isTouchingWall = Player.CheckTouchingWall();
 
     }
 
@@ -37,7 +40,7 @@ public class PlayerAirState : PlayerState
         InputX = Player.InputHandler.NormInputX;
         jumpInput = Player.InputHandler.JumpInput;
         jumpInputStop = Player.InputHandler.JumpInputStop;
-
+        grabInput = Player.InputHandler.GrabInput;
 
         CheckJumpInput();
 
@@ -46,15 +49,23 @@ public class PlayerAirState : PlayerState
         {
             StateMachine.ChangeState(Player.LandState);
         }
-        else if(jumpInput && Player.JumpState.CanJump())
+        else if (jumpInput && Player.JumpState.CanJump())
         {
             StateMachine.ChangeState(Player.JumpState);
+        }
+        else if (isTouchingWall && grabInput)
+        {
+            StateMachine.ChangeState(Player.WallGrabState);
+        }
+        else if (isTouchingWall && InputX == Player.PlayerDirection && Player.CurrentVelocity.y<=0)
+        {
+            StateMachine.ChangeState(Player.WallSlideState);
         }
         else
         {
             Player.FlipCheck(InputX);
             Player.SetVelocityX(PlayerData.MovementVelocity * InputX);
-            Player.Animator.SetFloat("yVelocity",Player.CurrentVelocity.y);
+            Player.Animator.SetFloat("yVelocity", Player.CurrentVelocity.y);
             Player.Animator.SetFloat("xVelocity", Mathf.Abs(Player.CurrentVelocity.x));
         }
     }

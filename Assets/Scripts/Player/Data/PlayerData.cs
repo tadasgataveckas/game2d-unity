@@ -21,4 +21,11 @@ public class PlayerData : ScriptableObject
     [Header("Check Variables")]
     public float groundCheckRadius = 0.3f;
     public LayerMask groundMask;
+    public float wallCheckDistance = 1f;
+
+    [Header("Wall Slide state")]
+    public float wallSlideVelocity = 3f;
+
+    [Header("Wall Climb state")]
+    public float wallClimbVelocity = 3f;
 }

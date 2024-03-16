@@ -8,6 +8,8 @@ public class PlayerGroundedState : PlayerState
     protected int InputX;
     private bool JumpInput;
     private bool IsGrounded;
+    private bool IsTouchingWall;
+    private bool GrabInput;
     public PlayerGroundedState(Player player, PlayerStateMachine statemachine, PlayerData playerdata, string animationboolname) : base(player, statemachine, playerdata, animationboolname)
     {
     }
@@ -16,6 +18,7 @@ public class PlayerGroundedState : PlayerState
     {
         base.DoChecks();
         IsGrounded = Player.CheckGrounded();
+        IsTouchingWall = Player.CheckTouchingWall();
     }
 
     public override void Enter()
@@ -34,6 +37,7 @@ public class PlayerGroundedState : PlayerState
         base.LogicUpdate();
         InputX = Player.InputHandler.NormInputX;
         JumpInput = Player.InputHandler.JumpInput;
+        GrabInput = Player.InputHandler.GrabInput;
 
         if (JumpInput && Player.JumpState.CanJump())
         {
@@ -45,6 +49,10 @@ public class PlayerGroundedState : PlayerState
             StateMachine.ChangeState(Player.AirState);
             //no jump after walking off ledge without jumping first
             //Player.JumpState.DecreaseJumpCount();
+        }
+        else if (IsTouchingWall && GrabInput)
+        {
+            StateMachine.ChangeState(Player.WallGrabState);
         }
     }
 
