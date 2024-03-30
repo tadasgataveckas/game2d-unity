@@ -7,6 +7,8 @@ public class PlayerAbilityState : PlayerState
     protected bool isAbilityDone;
 
     private bool isGrounded;
+
+    protected bool isAnimationDone;
     public PlayerAbilityState(Player player, PlayerStateMachine statemachine, PlayerData playerdata, string animationboolname) : base(player, statemachine, playerdata, animationboolname)
     {
     }
@@ -21,6 +23,7 @@ public class PlayerAbilityState : PlayerState
     {
         base.Enter();
         isAbilityDone = false;
+        isAnimationDone = false;
     }
 
     public override void Exit()
@@ -44,5 +47,10 @@ public class PlayerAbilityState : PlayerState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+    }
+
+    public virtual void AnimationFinishTrigger()
+    {
+        isAnimationDone = true;
     }
 }

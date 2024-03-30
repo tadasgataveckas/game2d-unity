@@ -47,7 +47,15 @@ public class PlayerAirState : PlayerState
         CheckJumpInput();
 
         //stateupdates
-        if (isGrounded && Player.CurrentVelocity.y < 0.01f)
+        if (Player.InputHandler.AttackInputs[(int)CombatInputs.primary])
+        {
+            StateMachine.ChangeState(Player.PrimaryAttackState);
+        }
+        else if (Player.InputHandler.AttackInputs[(int)CombatInputs.secondary])
+        {
+            StateMachine.ChangeState(Player.SecondaryAttackState);
+        }
+        else if (isGrounded && Player.CurrentVelocity.y < 0.01f)
         {
             StateMachine.ChangeState(Player.LandState);
         }

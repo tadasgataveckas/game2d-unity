@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,21 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInput { get; private set; }
     public bool JumpInputStop { get; private set; }
 
-    public bool CrouchInput {  get; private set; }
-    public bool GrabInput {  get; private set; }
+    public bool CrouchInput { get; private set; }
+    public bool GrabInput { get; private set; }
+
+    public bool[] AttackInputs { get; private set; } 
 
     [SerializeField]
     private float inputHoldTime = 0.1f;
 
     private float jumpInputStartTime;
+
+    private void Start()
+    {
+        int count = Enum.GetValues(typeof(CombatInputs)).Length;
+        AttackInputs = new bool[count];
+    }
 
     private void Update()
     {
@@ -63,6 +72,32 @@ public class PlayerInputHandler : MonoBehaviour
             CrouchInput = false;
         }
     }
+
+    public void OnPrimaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInputs[(int)CombatInputs.primary] = true;
+            
+        }
+        if (context.canceled)
+        {
+            AttackInputs[(int)CombatInputs.primary] = false;
+        }
+    }
+
+    public void OnSecondaryAttackInput(InputAction.CallbackContext context) 
+    {
+        if (context.started)
+        {
+            AttackInputs[(int)CombatInputs.secondary] = true;
+
+        }
+        if (context.canceled)
+        {
+            AttackInputs[(int)CombatInputs.secondary] = false;
+        }
+    }
     public void SetJumpInputFalse() => JumpInput = false;
 
     private void CheckInputHoldTime()
@@ -84,4 +119,10 @@ public class PlayerInputHandler : MonoBehaviour
             GrabInput = false;
         }
     }
+}
+
+public enum CombatInputs
+{
+    primary,
+    secondary
 }

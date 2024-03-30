@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     public PlayerCrouchIdleState CrouchIdleState { get; private set; }
     public PlayerCrouchMoveState CrouchMoveState { get; private set; }
 
+    public PlayerAttackState PrimaryAttackState { get; private set; }
+    public PlayerAttackState SecondaryAttackState { get; private set; }
+
     #endregion
 
     #region Player components
@@ -32,6 +35,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D PlayerRigidbody { get; private set; }
 
     public BoxCollider2D PlayerBoxCollider { get; private set; }
+
+    public PlayerInventory Inventory { get; private set; } 
 
     [SerializeField]
     private PlayerData PlayerData;
@@ -74,6 +79,8 @@ public class Player : MonoBehaviour
 
         CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, PlayerData, "crouchIdle");
         CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, PlayerData, "crouchMove");
+        PrimaryAttackState = new PlayerAttackState(this, StateMachine, PlayerData, "attack");
+        SecondaryAttackState = new PlayerAttackState(this, StateMachine, PlayerData, "attack");
     }
 
     private void Start()
@@ -82,7 +89,10 @@ public class Player : MonoBehaviour
         InputHandler = GetComponent<PlayerInputHandler>();
         PlayerRigidbody = GetComponent<Rigidbody2D>();
         PlayerBoxCollider = GetComponent<BoxCollider2D>();
+        Inventory = GetComponent<PlayerInventory>();
         PlayerDirection = 1;
+        PrimaryAttackState.SetWeapon(Inventory.Weapons[(int)CombatInputs.primary]);
+        //SecondaryAttackState.SetWeapon(Inventory.Weapons[(int)CombatInputs.secondary]);
         StateMachine.Initialize(IdleState);
     }
 
