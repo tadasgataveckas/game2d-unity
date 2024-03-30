@@ -22,4 +22,7 @@ MonoBehaviour:
     m_Bits: 64
   wallCheckDistance: 1
   wallSlideVelocity: 3
-  wallClimbVelocity: 3
+  wallClimbVelocity: 10
+  wallJumpVelocity: 20
+  wallJumpTime: 0.05
+  wallJumpAngle: {x: 1, y: 2}

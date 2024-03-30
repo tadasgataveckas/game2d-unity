@@ -26,9 +26,16 @@ public class PlayerIdleState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(InputX != 0 && !isExitingState)
+        if (!isExitingState)
         {
-            StateMachine.ChangeState(Player.MoveState);
+            if (InputX != 0)
+            {
+                StateMachine.ChangeState(Player.MoveState);
+            }
+            else if (InputCrouch == true)
+            {
+                StateMachine.ChangeState(Player.CrouchIdleState);
+            }
         }
     }
 

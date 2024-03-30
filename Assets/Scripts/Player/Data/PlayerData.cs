@@ -15,6 +15,11 @@ public class PlayerData : ScriptableObject
     public float jumpVelocity = 17f;
     public int jumpCount = 1;
 
+    [Header("Crouch state")]
+    public float CrouchSpeedMultiplier = 0.5f;
+    public float BoxColliderSizeEnter = 1.5f;
+    public float BoxColliderSizeExit = 3.5f;
+
     [Header("In air state")]
     public float variableJumpHeightMultiplier = 0.5f;
 

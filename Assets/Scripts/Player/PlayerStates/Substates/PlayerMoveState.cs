@@ -31,9 +31,16 @@ public class PlayerMoveState : PlayerGroundedState
         base.LogicUpdate();
         Player.FlipCheck(InputX);
         Player.SetVelocityX(PlayerData.MovementVelocity * InputX);
-        if(InputX == 0 && !isExitingState)
+        if (!isExitingState)
         {
-            StateMachine.ChangeState(Player.IdleState);
+            if (InputX == 0)
+            {
+                StateMachine.ChangeState(Player.IdleState);
+            }
+            else if (InputCrouch == true)
+            {
+                StateMachine.ChangeState(Player.CrouchMoveState);
+            }
         }
     }
 

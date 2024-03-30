@@ -21,12 +21,17 @@ public class Player : MonoBehaviour
 
     public PlayerWallJumpState WallJumpState { get; private set; }
 
+    public PlayerCrouchIdleState CrouchIdleState { get; private set; }
+    public PlayerCrouchMoveState CrouchMoveState { get; private set; }
+
     #endregion
 
     #region Player components
     public Animator Animator { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D PlayerRigidbody { get; private set; }
+
+    public BoxCollider2D PlayerBoxCollider { get; private set; }
 
     [SerializeField]
     private PlayerData PlayerData;
@@ -47,6 +52,8 @@ public class Player : MonoBehaviour
     private Transform groundCheck;
     [SerializeField]
     private Transform wallCheck;
+    [SerializeField]
+    private Transform ceilingCheck;
 
     #endregion
 
@@ -65,7 +72,8 @@ public class Player : MonoBehaviour
         WallSlideState = new PlayerWallSlideState(this, StateMachine, PlayerData, "wallSlide");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, PlayerData, "inAir");
 
-        
+        CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, PlayerData, "crouchIdle");
+        CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, PlayerData, "crouchMove");
     }
 
     private void Start()
@@ -73,6 +81,7 @@ public class Player : MonoBehaviour
         Animator = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();
         PlayerRigidbody = GetComponent<Rigidbody2D>();
+        PlayerBoxCollider = GetComponent<BoxCollider2D>();
         PlayerDirection = 1;
         StateMachine.Initialize(IdleState);
     }
@@ -112,6 +121,18 @@ public class Player : MonoBehaviour
         PlayerRigidbody.velocity = VelocityData;
         CurrentVelocity = VelocityData;
     }
+
+    public void SetBoxColliderOnCrouchEnter()
+    {
+        VelocityData.Set(PlayerBoxCollider.size.x, PlayerData.BoxColliderSizeEnter);
+        PlayerBoxCollider.size = VelocityData;
+    }
+
+    public void SetBoxColliderOnCrouchExit()
+    {
+        VelocityData.Set(PlayerBoxCollider.size.x, PlayerData.BoxColliderSizeExit);
+        PlayerBoxCollider.size = VelocityData;
+    }
     #endregion
 
     #region Check methods
@@ -119,6 +140,11 @@ public class Player : MonoBehaviour
     public bool CheckGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, PlayerData.groundCheckRadius, PlayerData.groundMask);
+    }
+
+    public bool CheckCeiling()
+    {
+        return Physics2D.OverlapCircle(ceilingCheck.position, PlayerData.groundCheckRadius, PlayerData.groundMask);
     }
 
     private void Flip()

@@ -12,6 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInput { get; private set; }
     public bool JumpInputStop { get; private set; }
 
+    public bool CrouchInput {  get; private set; }
     public bool GrabInput {  get; private set; }
 
     [SerializeField]
@@ -51,6 +52,17 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnCrouchInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            CrouchInput = true;
+        }
+        if (context.canceled)
+        {
+            CrouchInput = false;
+        }
+    }
     public void SetJumpInputFalse() => JumpInput = false;
 
     private void CheckInputHoldTime()
