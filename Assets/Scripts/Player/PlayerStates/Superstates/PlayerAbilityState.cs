@@ -40,7 +40,10 @@ public class PlayerAbilityState : PlayerState
             {
                 StateMachine.ChangeState(Player.IdleState);
             }
-            StateMachine.ChangeState(Player.AirState);
+            else if (!isGrounded)
+            {
+                StateMachine.ChangeState(Player.AirState);
+            }
         }
     }
 
