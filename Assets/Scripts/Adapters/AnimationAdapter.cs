@@ -14,4 +14,19 @@ public class AnimationAdapter : MonoBehaviour
     {
         Weapon.AnimationFinishTrigger();
     }
+
+    private void AnimationStartMovementTrigger()
+    {
+        Weapon.AnimationStartMovemenetTrigger();
+    }
+
+    private void AnimationEndMovementTrigger() 
+    {
+        Weapon.AnimationStopMovementTrigger();
+    }
+
+    private void AnimationActionTrigger()
+    {
+        Weapon.AnimationActionTrigger();
+    }
 }

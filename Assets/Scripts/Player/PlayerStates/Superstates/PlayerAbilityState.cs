@@ -34,13 +34,20 @@ public class PlayerAbilityState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (isAbilityDone)
+        //Debug.Log("Ability done?" + isAbilityDone.ToString());
+        //Debug.Log("Animation done?" + isAnimationFinished.ToString());
+        //(Player.CurrentVelocity.y < 0.01f))
+        if (isAbilityDone || isAnimationFinished)
         {
             if (isGrounded && (Player.CurrentVelocity.y < 0.01f))
             {
                 StateMachine.ChangeState(Player.IdleState);
             }
-            else if (!isGrounded)
+            else if (isGrounded && (Player.CurrentVelocity.y) > 0f)
+            {
+                StateMachine.ChangeState(Player.MoveState);
+            }
+            else if (!isGrounded )
             {
                 StateMachine.ChangeState(Player.AirState);
             }
@@ -54,6 +61,7 @@ public class PlayerAbilityState : PlayerState
 
     public virtual void AnimationFinishTrigger()
     {
+       
         isAnimationDone = true;
     }
 }
