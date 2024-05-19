@@ -56,6 +56,6 @@ public class CombatDummy : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(1f);
         text.gameObject.SetActive(false);
         
-        text.transform.position = new Vector2(rb.position.x, rb.position.y+3f);
+        text.transform.position = new Vector2(rb.position.x, rb.position.y);
     }
 }

@@ -25,7 +25,7 @@ public class EnemyBehaviour : MonoBehaviour
 		animator = GetComponent<Animator>();
 		thisPoint = pointA.transform;
 		animator.SetBool("walk", true);
-		Flip();
+		
 		playercollider = playerObject.GetComponent<BoxCollider2D>();
 		isAttacking = false;
 		//rb.velocity = new Vector2(velocity, 0);
