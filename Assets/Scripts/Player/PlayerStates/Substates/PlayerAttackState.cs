@@ -25,7 +25,7 @@ public class PlayerAttackState : PlayerAbilityState
         base.Exit();
         //isAnimationFinished = true;
         Weapon.ExitWeapon();
-        Player.SetVelocityX(0f);
+        //Player.SetVelocityX(0f);
     }
 
     public override void LogicUpdate()
@@ -35,7 +35,7 @@ public class PlayerAttackState : PlayerAbilityState
         if (setVelocity)
         {
             
-            SetPlayerVelocity(velocityToSet * Player.PlayerDirection);
+            SetPlayerVelocity(Player.CurrentVelocity.x * Player.PlayerDirection);
                    
         }
         

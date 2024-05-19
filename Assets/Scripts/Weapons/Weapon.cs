@@ -58,7 +58,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void AnimationStopMovementTrigger()
     {
-        AttackState.SetPlayerVelocity(0f);
+        //AttackState.SetPlayerVelocity(0f);
         //Debug.Log("Animation stop movement weapon.cs");
     }
 

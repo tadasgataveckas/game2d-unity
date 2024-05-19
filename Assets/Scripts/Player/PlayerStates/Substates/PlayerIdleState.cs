@@ -16,6 +16,7 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        Player.SetVelocityX(0);
     }
 
     public override void Exit()
